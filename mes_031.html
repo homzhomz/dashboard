@@ -1,0 +1,698 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MES 機台管理看板(TYP)</title>
+    <link href="../js/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="../js/jquery-1.12.1.min.js"></script>
+    <script src="../js/bootstrap-4.3.1/js/bootstrap.min.js"></script>
+    <link href="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        .title {
+            background: #1a1a1a;
+            height: 80px;
+            margin-bottom: 10px;
+            padding-left: 15px;
+            text-align: left;
+            font-family: 微軟正黑體;
+            font-size: 40px;
+            line-height: 80px;
+            color: #ffffff;
+        }
+
+        .box-wrapper {
+            background: linear-gradient( to bottom, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) left top no-repeat, linear-gradient( to right, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) left top no-repeat, linear-gradient( to bottom, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) right top no-repeat, linear-gradient( to left, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) right top no-repeat, linear-gradient( to top, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) left bottom no-repeat, linear-gradient( to right, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) left bottom no-repeat, linear-gradient( to top, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) right bottom no-repeat, linear-gradient( to left, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) right bottom no-repeat;
+            background-size: 15px 15px;
+            background-color: #20323E;
+            padding: 1px;
+            height: 180px;
+            margin-bottom: 8px;
+            position: relative;
+            text-align: center;
+        }
+
+        .box-content {
+            padding: 5px;
+            color: #fff;
+            font-family: 微軟正黑體;
+            font-size: 20px;
+            position: absolute;
+            left: 8px;
+            top: 1px;
+            z-index: 999;
+        }
+
+        .box-qty {
+            color: #fff;
+            font-weight: bold;
+            font-family: 微軟正黑體;
+            font-size: 70px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .datalist {
+            font-family: 微軟正黑體;
+            width: 98%;
+            margin-top: 13px;
+            margin-left: 13px;
+            font-weight: bold;
+            font-size: 22px;
+            color: #ffffff;
+        }
+
+            .datalist th {
+                background-color: #17FFF3;
+                color: #173E3C;
+            }
+
+            .datalist td {
+                border-bottom: 1px solid #fff;
+            }
+
+            .datalist tr {
+                height: 52px;
+            }
+
+        .chart {
+            height: 140px;
+        }
+
+        [class*="col-"] {
+            padding-right: 4px;
+            padding-left: 4px;
+        }
+
+        .row {
+            margin-left: -17px;
+        }
+
+        .box {
+            background: linear-gradient( to bottom, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) left top no-repeat, linear-gradient( to right, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) left top no-repeat, linear-gradient( to bottom, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) right top no-repeat, linear-gradient( to left, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) right top no-repeat, linear-gradient( to top, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) left bottom no-repeat, linear-gradient( to right, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) left bottom no-repeat, linear-gradient( to top, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) right bottom no-repeat, linear-gradient( to left, #D0D7CC 0px, #D0D7CC 1px, transparent 2px, transparent 100% ) right bottom no-repeat;
+            background-size: 15px 15px;
+            background-color: #20323E;
+            padding: 1px;
+            height: 118px;
+            margin-bottom: 8px;
+            position: relative;
+            text-align: center;
+            color: #fff;
+            outline: 1px solid rgb(106, 214, 205);
+        }
+
+        .card {
+            background-color: #20323E;
+            color: #fff;
+            text-align: center;
+        }
+
+        #wrap {
+            overflow: hidden;
+        }
+
+            #wrap .wrapIn {
+                width: 8000%;
+                height: 30px;
+            }
+
+                #wrap .wrapIn div {
+                    float: left;
+                    margin-right: 50px;
+                }
+
+        #date {
+            position: fixed;
+            top: -15px;
+            right: 22px;
+            font-family: 微軟正黑體;
+            font-size: 28px;
+            letter-spacing: 10px;
+        }
+
+        #time {
+            position: fixed;
+            top: 15px;
+            right: 0px;
+            font-family: 微軟正黑體;
+            font-size: 28px;
+            letter-spacing: 10px;
+        }
+
+        .sidemenu {
+            z-index: 999;
+            width: 50px;
+            height: 100%;
+            background: #1a1a1a;
+            position: absolute;
+            left: -50px;
+            font-size: 25px;
+            color: #fff;
+            text-align: center;
+        }
+
+        body {
+            font-family: 微軟正黑體;
+            background: #000;
+            padding-left: 5px;
+            position: relative;
+        }
+
+        /*  span {
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }*/
+
+        #title1 {
+            position: relative;
+        }
+
+        img {
+            position: absolute;
+            top: 15px;
+            left: -0px;
+            opacity: 0.9;
+        }
+
+        .wo_id {
+            position: absolute;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            font-family: 微軟正黑體;
+            font-size: 20px;
+            color: #fff;
+            line-height: 110px;
+        }
+
+        .item_desc {
+            position: absolute;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            font-family: 微軟正黑體;
+            font-size: 20px;
+            color: #fff;
+            line-height: 180px;
+        }
+
+        .station {
+            position: absolute;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            font-family: 微軟正黑體;
+            font-size: 20px;
+            color: #17FFF3;
+            line-height: 250px;
+        }
+
+        .min {
+            position: absolute;
+            z-index: 99;
+            width: 100%;
+            height: 100%;
+            font-family: 微軟正黑體;
+            font-size: 22px;
+            color: #fff;
+            line-height: 270px;
+        }
+
+        marquee {
+            font-family: 微軟正黑體;
+            font-size: 20px;
+        }
+
+
+        .fact {
+            background-color: #54615f;
+            height: 100px;
+            margin-bottom: 6px;
+            position: relative;
+            text-align: center;
+            color: rgb(255, 255, 255);
+            font-size: 26px;
+        }
+
+
+
+
+
+        /*      * {
+            outline: 1px solid rgb(106, 214, 205);
+           }     */
+
+
+        .ff {
+            float: left;
+            top: 0;
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            right: 0;
+        }
+
+
+        .container {
+            width: 400px;
+            height: 400px;
+            background: #ff0000;
+        }
+
+        .top-container {
+            /*background: #00ff00;*/
+            border: 1px solid #000000;
+            outline: 1px solid rgb(106, 214, 205);
+            font-size: 20px;
+        }
+
+        .right-container {
+            /*background: #00ff00;*/
+            height: 50px;
+            outline: 1px solid rgb(106, 214, 205);
+        }
+
+        .left-container {
+            /*background: #0000ff;*/
+            height: 50px;
+            outline: 1px solid rgb(106, 214, 205);
+        }
+
+        .bottom-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bottom-container {
+            outline: 1px solid rgb(106, 214, 205);
+        }
+
+        .flex-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .flex-1 {
+            flex: 1;
+        }
+
+        .template_row {
+            display: none;
+            margin-bottom:1%;
+        }
+
+        #typ_row_1 .box {
+            background-color: #054D0C;
+        }
+        .btn {
+            cursor: pointer;
+        }
+
+        .fBtn {
+            margin-right: 2%;
+            margin-top: 1%;
+        }
+
+    </style>
+</head>
+<body>
+
+
+
+    <div class="container-fluid"  id="clear">
+        <div class="row d-grid gap-3 text-center" id="typ_row_1">
+            <div class="col-md-12 align-self-center" style="padding-bottom: 1%;">
+                <div class="btn btn-success fBtn" data-val="all" >
+                    TYP廠區
+                </div>
+                <div class="btn btn-success fBtn" data-val="TYP_1-1溶劑區">
+                    TYP_1-1溶劑區
+                </div>
+                <div class="btn btn-success fBtn" data-val="TYP_1-1酸鹼區">
+                    TYP_1-1酸鹼區
+                </div>
+                <div class="btn btn-success fBtn" data-val="TYP_1-2O3區">
+                    TYP_1-2O3區
+                </div>
+                <div class="btn btn-success fBtn" data-val="TYP_1-2酸鹼區">
+                    TYP_1-2酸鹼區
+                </div>
+                <div class="btn btn-success fBtn" data-val="TYP_氨水廠">
+                    TYP_氨水廠
+                </div>
+            </div>
+
+            <div class="template_row">
+                <div id="template1">
+                    <div class="col-md-12 showCtrl fClass" data-type="header">
+                        <div id="typ_factory">
+                            <div class="col-md-2" style="padding: 0px 10px 0px 0px;margin-left:-15px;">
+                                <div class="fact" style="height: 50px; line-height: 50px;">ccb_location</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="template2">
+                    <div class="col-md-2 p-2 showCtrl fClass" data-type="content">
+                        <div class="card">
+                            <div class="top-container flex-row">
+                                <div class="left-container flex-1">ccb_id</div>
+                                <div class="right-container flex-1 bgClass">ccb_weight</div>
+                            </div>
+                            <div class="bottom-container">wo_list</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script type="text/javascript">
+        var no = 0;
+        var week = 1;
+        var CurrentDate;
+        var mach_no;
+        var aa;
+        var data;
+        var date_factory;
+
+        $(function () {
+            //clearcontent('typ_row_1');
+            mach_typ();
+            $('.fBtn').click(function () {
+                var thisClass = $(this).data('val');
+
+                $('.showCtrl').hide();
+                $('.' + thisClass).show();
+
+                if (thisClass == 'all') {
+                    $('.showCtrl').show();
+                }
+
+
+            });
+        });
+
+
+        //function myrefresh() {
+        //    window.location.reload();
+        //}
+        //setTimeout('myrefresh()', 12000); //指定1秒刷新一次
+
+       
+        //setInterval(mach_typ, 60000);
+
+
+        //typ_factory()
+        //bindData()
+
+        // mach_no.append('</div>')
+
+
+        // ShowDateTime();
+        // setInterval(ShowDateTime, 1000);
+
+        // mach();
+        // setInterval(mach, 300000);
+
+        function ShowDateTime() {
+            var day_list = ['日', '一', '二', '三', '四', '五', '六'];
+            var now = new Date();//生成日期物件(完整的日期資訊)
+            var y = now.getFullYear();//年份
+            var M = now.getMonth() + 1;//月份
+            if (M < 10) {
+                M = '0' + M;
+            }
+            var d = now.getDate();//日期
+            if (d < 10) {
+                d = '0' + d;
+            }
+            var h = now.getHours();//小時
+            if (h < 10) {
+                h = '0' + h;
+            }
+            var m = now.getMinutes();//分鐘
+            if (m < 10) {
+                m = '0' + m;
+            }
+            var s = now.getSeconds();//秒數
+            if (s < 10) {
+                s = '0' + s;
+            }
+
+            var day = now.getDay();
+            $('#date').html(y + '-' + M + '-' + d);
+            $('#time').html(h + ':' + m + ':' + s + '星期' + day_list[day]);
+            CurrentDate = y + '-' + M + '-' + d + ' ' + h + ':' + m + ':' + s;
+        }
+
+
+
+        function typ_factory() {
+            $.ajax({
+                type: "POST",
+                url: "dashboard.ashx",
+                data: "fun_na=typ_factory&factory=TYP",
+                dataType: "json",
+                async: false,
+                success: function (resp) {
+
+                    for (var i = 0; i < resp.length; i++) {
+
+
+                        console.log(resp[i].ccb_area_name);
+
+                    }
+
+                    date_factory = resp;
+
+                }
+            })
+        }
+
+
+
+
+
+
+
+        function mach_typ() {
+            $.ajax({
+                type: "POST",
+                url: "dashboard.ashx",
+                data: "fun_na=typ_ccb&factory=TYP",
+                dataType: "json",
+                async: false,
+                success: function (resp) {
+
+                    //console.log(data);
+                    //typ_factory()
+                    data = resp;
+                    bindData();
+                }
+            })
+        }
+
+        function bindTestData() {
+            //data = JSON.parse('[{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-1301","ccb_weight":"0","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-1302","ccb_weight":"0","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-1303","ccb_weight":"14040","wo_id":"PW138279","entity_id":"21007S3709-TNJ","item_name":"HSE 50T","carrier_id":"PPCU1718275","step_name":"槽車充填站(2.0)","stay_mins":"175","step_finish_datetime":"2022-10-05 10:33:14"},{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-1304","ccb_weight":"21700","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-1305","ccb_weight":"6680","wo_id":"PW140211","entity_id":"21006H2856-NTC","item_name":"HF 49%","carrier_id":"PPCU7040518","step_name":"充前點檢站","stay_mins":"3","step_finish_datetime":"2022-10-05 13:30:28"},{"factory":"TYP","ccb_location":"TYP_1-2酸鹼區","ccb_id":"WIC-1C01","ccb_weight":"17750","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-2酸鹼區","ccb_id":"WIC-1C02","ccb_weight":"24760","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-2酸鹼區","ccb_id":"WIC-1C03","ccb_weight":"26530","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-2酸鹼區","ccb_id":"WIC-1C04","ccb_weight":"26340","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-2301","ccb_weight":"12430","wo_id":"PW139444","entity_id":"21005A2873-MMT","item_name":"NH4OH 29%","carrier_id":"PPCU7040586","step_name":"槽車移出站","stay_mins":"9","step_finish_datetime":"2022-10-05 13:19:09"},{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-2302","ccb_weight":"12280","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-2303","ccb_weight":"8410","wo_id":"PW140225","entity_id":"21006S1861-TSM","item_name":"H2SO4 96%","carrier_id":"EKTU2860190","step_name":"充前點檢站","stay_mins":"36","step_finish_datetime":"2022-10-05 12:57:07"},{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-2C01","ccb_weight":"0","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1酸鹼區","ccb_id":"WIC-2C02","ccb_weight":"11430","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1溶劑區","ccb_id":"WIC-3301","ccb_weight":"26610","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1溶劑區","ccb_id":"WIC-3302","ccb_weight":"-20","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1溶劑區","ccb_id":"WIC-3303","ccb_weight":"6400","wo_id":"PW138444","entity_id":"21004P3626-MMT","item_name":"IPA","carrier_id":"PPCU7020050","step_name":"充後點檢站","stay_mins":"144","step_finish_datetime":"2022-10-05 13:10:13"},{"factory":"TYP","ccb_location":"TYP_1-1溶劑區","ccb_id":"WIC-3304","ccb_weight":"-40","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1溶劑區","ccb_id":"WIC-3305","ccb_weight":"-130","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-1溶劑區","ccb_id":"WIC-3306","ccb_weight":"6750","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-2O3區","ccb_id":"WIC-5C01","ccb_weight":"0","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-2O3區","ccb_id":"WIC-5C02","ccb_weight":"-10","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-2O3區","ccb_id":"WIC-5C03","ccb_weight":"26560","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_1-2O3區","ccb_id":"WIC-5C04","ccb_weight":"30340","wo_id":"","entity_id":"","item_name":"","carrier_id":"","step_name":"","stay_mins":"","step_finish_datetime":""},{"factory":"TYP","ccb_location":"TYP_氨水廠","ccb_id":"WIC-A401","ccb_weight":"19060","wo_id":"PW139440","entity_id":"21005A2869-TSM","item_name":"NH4OH 29%","carrier_id":"PPCU1320234","step_name":"槽車充填站(2.0)","stay_mins":"94","step_finish_datetime":"2022-10-05 11:54:12"},{"factory":"TYP","ccb_location":"TYP_氨水廠","ccb_id":"WIC-A402","ccb_weight":"8480","wo_id":"PW139441","entity_id":"21005A2870-TSM","item_name":"NH4OH 29%","carrier_id":"PPCU1320152","step_name":"槽車充填站(2.0)","stay_mins":"2","step_finish_datetime":"2022-10-05 13:26:09"}]');
+        }
+
+
+
+        function bindData() {
+            //bindTestData();
+
+            //console.log(date_factory[index].TANK_AREA_DESC);
+
+            typ_factory()
+
+
+
+            for (var k = 0; k < date_factory.length; k++) {
+
+                
+                var this_heard = $("#typ_row_1 .template_row").children().eq(0).html();
+                this_heard = this_heard.replace('ccb_location', date_factory[k].ccb_area_name);
+                this_heard = this_heard.replace('fClass', date_factory[k].ccb_area_name);
+                $("#typ_row_1").html($("#typ_row_1").html() + this_heard);
+
+
+                for (var i = 0; i < data.length; i++) {
+                    var ls_ccb_id;
+                    var ls_ccb_weight;
+                    var ls_carrier_id = '';
+                    var ls_item_name = '';
+                    var ls_wo_id = '';
+                    var ls_entity_id = '';
+                    var ls_step_name = '';
+                    var ls_carrier_id = '';
+                    var ls_p;
+                    var min_height = 0;
+                    var set_min_height;
+
+
+                    ls_ccb_id = data[i].ccb_id;
+                    ls_ccb_weight = data[i].ccb_weight;
+                    ls_carrier_id = data[i].carrier_id;
+                    ls_item_name = data[i].item_name;
+                    ls_wo_id = data[i].wo_id;
+                    ls_entity_id = data[i].entity_id;
+                    ls_step_name = data[i].step_name;
+                    ls_stay_mins = data[i].stay_mins;
+
+
+                    $('.bottom-container').each(function () {
+                        if ($(this).height() != 0) {
+                            min_height = $(this).height();
+
+                        }
+                    });
+
+                    $('.bottom-container').css('min-height', min_height + 'px');
+
+                    if (ls_stay_mins != '') {
+                        ls_stay_mins = '停留時間' + ls_stay_mins + '分';
+                    }
+
+
+                    ls_p = ls_carrier_id == '' ? '' : '<span>' + ls_carrier_id + '</span>' + '<span>' + ls_item_name + '</span>' + '<span>' + ls_wo_id + '</span>' + '<span>' + ls_entity_id + '</span>' + '<span>' + ls_step_name + '</span>' + '<span>' + ls_stay_mins + '</span>'
+
+                    var bgClass = parseInt(ls_ccb_weight) > 100 ? 'bg-success' : 'bg-danger';
+
+                    if (data[i].ccb_location == date_factory[k].ccb_area_name) {
+
+                        //var this_factory = $("#typ_factory").html();
+                        //console.log(this_factory);
+                        //this_factory = this_factory.replace('ccb_location', ls_ccb_location);
+                        //console.log(this_factory);
+
+                        var this_row = $("#typ_row_1 .template_row").children().eq(1).html();
+                        var content = this_row.replace('ccb_id', ls_ccb_id).replace('ccb_weight', ls_ccb_weight + 'kg');
+
+                        content = content.replace('wo_list', ls_p);
+                        content = content.replace('bgClass', bgClass);
+                        content = content.replace('fClass', date_factory[k].ccb_area_name);
+                        $("#typ_row_1").html($("#typ_row_1").html() + content);
+                    }
+                }
+
+            }
+            $('.bottom-container').each(function () {
+                $(this).css('background', ($(this).html() == '') ? '#816e35' : '#005aff59');
+            });
+
+        }
+
+
+
+        function mach() {
+            $.ajax({
+                type: "POST",
+                url: "dashboard.ashx",
+                data: "fun_na=mes_031",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        switch (data[i].e_tank_area_id) {
+                            // case 'WIC-A401':
+                            //     mach_no = $("#mach_no1");
+                            //     if ((Date.parse(data[i].step_finish_datetime)).valueOf() < (Date.parse(CurrentDate)).valueOf()) {
+                            //         $('#mach_no1').css({ 'background-color': '#6C272C' });
+                            //     }
+                            //     else {
+                            //         $('#mach_no1').css({ 'background-color': '#054D0C' });
+                            //     }
+                            //     break;
+                            // case 'WIC-A402':
+                            //     mach_no = $("#mach_no2");
+                            //     if ((Date.parse(data[i].step_finish_datetime)).valueOf() < (Date.parse(CurrentDate)).valueOf()) {
+                            //         $('#mach_no2').css({ 'background-color': '#6C272C' });
+                            //     }
+                            //     else {
+                            //         $('#mach_no2').css({ 'background-color': '#054D0C' });
+                            //     }
+                            //     break;
+                            case 'WIC-1301':
+                                mach_no = $("#mach_no3");
+                                if ((Date.parse(data[i].step_finish_datetime)).valueOf() < (Date.parse(CurrentDate)).valueOf()) {
+                                    $('#mach_no3').css({ 'background-color': '#6C272C' });
+                                }
+                                else {
+                                    $('#mach_no3').css({ 'background-color': '#054D0C' });
+                                }
+                                break;
+                            case 'WIC-5C04':
+                                mach_no = $("#mach_no26");
+                                if ((Date.parse(data[i].step_finish_datetime)).valueOf() < (Date.parse(CurrentDate)).valueOf()) {
+                                    $('#mach_no26').css({ 'background-color': '#6C272C' });
+                                }
+                                else {
+                                    $('#mach_no26').css({ 'background-color': '#054D0C' });
+                                }
+                                break;
+                            default:
+                        }
+                        // mach_context(data[i].wo_id, data[i].item_name, data[i].step_name, data[i].step_finish_datetime);
+                    }
+                }
+            });
+        }
+
+        function mach_context(wo_id, item_name, step_name, step_finish_datetime) {
+            mach_no.html("");
+            mach_no.append('<div class="mach">')
+            mach_no.append('<div class="wo_id">' + wo_id + '</div>')
+            mach_no.append('<div class="item_desc">' + item_name + '</div>')
+            mach_no.append('<div class="station">' + step_name + '</div>')
+            mach_no.append('</div>')
+            //mach_no.append('<div class="min">' + step_finish_datetime + '-預估</div>')
+        }
+
+
+        $(document).ready(function () {
+            var w = document.documentElement.clientWidth;
+            $('#msg').width(w - 80);
+            var h = document.documentElement.clientHeight;
+            $('.line1').height(h - 375);
+            $('.box').height(((h - 140) / 5));
+        });
+
+        $('#TTP_mach').click(function (e) {
+            e.preventDefault();
+            window.open('MES_CCB_TTP.html', '_self');
+        });
+
+        $('#TYP_mach').click(function (e) {
+            e.preventDefault();
+            window.open('MES_CCB_TYP.html', '_self');
+        });
+
+        $('#TYP_wo').click(function (e) {
+            e.preventDefault();
+            window.open('MES_WO_TYP.html', '_self');
+
+        });
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head><title>
+	Main
+</title><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link rel="stylesheet" href="bootstrap/js/bootstrap-3.3.7/dist/css/bootstrap.min.css" /><link rel="stylesheet" href="bootstrap/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="bootstrap/stylesheets/bootstrap.css" /><link rel="stylesheet" href="bootstrap/stylesheets/bootstrapflow.css" /><link id="theme" rel="stylesheet" href="bootstrap/js/bootstrap-3.3.7/dist/themes/bootstrap_default.css" />
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+    
+    <script src="bootstrap/js/wheelzoom.js"></script>
+    <script src="bootstrap/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="scripts/locale"></script>
+    <script src="bootstrap/js/shim.min.js"></script>
+    <script src="bootstrap/js/xlsx.full.min.js"></script>
+    <style>
+        .mach_on {
+            background-color: #22B14C;
+            padding: 1px;
+            height: 100px;
+            margin-bottom: 6px;
+            position: relative;
+            text-align: center;
+            color: #fff;
+            font-size: 12px;
+            padding-top: 7px;
+        }
+
+        .mach_off {
+            background-color: #ED1C24;
+            padding: 1px;
+            height: 100px;
+            margin-bottom: 6px;
+            position: relative;
+            text-align: center;
+            color: #fff;
+            font-size: 12px;
+            padding-top: 7px;
+        }
+
+        .fact {
+            background-color: #16232B;
+            padding: 1px;
+            height: 100px;
+            margin-bottom: 6px;
+            position: relative;
+            text-align: center;
+            color: #fff;
+            font-size: 26px;
+        }
+
+        .line1 {
+            background-color: #20323E;
+            padding: 1px;
+            height: 800px;
+            margin-bottom: 8px;
+            position: relative;
+            text-align: center;
+        }
+
+        .idle {
+            font-size: 20px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            //typ
+            var typ_on = 0;
+            var typ_off = 0;
+            var ttp_on = 0;
+            var ttp_off = 0;
+
+            $.ajax({
+                type: "POST",
+                url: "../ashx/mes.ashx",
+                data: "fun_na=v_wo_eqp&fact=TYP",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    var i = 1;
+                    var tableBody = $("#TYP");
+                    tableBody.html("");
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].wo_id != '') {
+                            typ_on += 1;
+                            tableBody.append('<div class="col-md-1" style="padding:0px 10px 5px 0px;"><div class= "mach_on" style="height: 60px;"> ' + data[i].eqp_id + ' <br>' + data[i].wo_id + '<br>' + data[i].item_name + '</div></div>');
+                        }
+                        else {
+                            typ_off += 1;
+                            tableBody.append('<div class="col-md-1" style="padding:0px 10px 5px 0px;"><div class= "mach_off" style="height: 60px;"> ' + data[i].eqp_id + ' <br><span class="idle">Idle</span></div></div>');
+                        }
+                    }
+                }
+            });
+
+            //ttp
+            $.ajax({
+                type: "POST",
+                url: "../ashx/mes.ashx",
+                data: "fun_na=v_wo_eqp&fact=TTP",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    var i = 1;
+                    var tableBody = $("#TTP");
+                    tableBody.html("");
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].wo_id != '') {
+                            ttp_on += 1;
+                            tableBody.append('<div class="col-md-1" style="padding:0px 10px 5px 0px;"><div class= "mach_on" style="height: 60px;"> ' + data[i].eqp_id + ' <br>' + data[i].wo_id + '<br>' + data[i].item_name + '</div></div>');
+                        }
+                        else {
+                            ttp_off += 1;
+                            tableBody.append('<div class="col-md-1" style="padding:0px 10px 5px 0px;"><div class= "mach_off" style="height: 60px;"> ' + data[i].eqp_id + ' <br><span class="idle">Idle</span></div></div>');
+                        }
+                    }
+                }
+            });
+
+            $('#typ_on').html(typ_on);
+            $('#typ_off').html(typ_off);
+            $('#ttp_on').html(ttp_on);
+            $('#ttp_off').html(ttp_off);
+        });
+    </script>
+<script type="text/javascript" src="bootstrap/js/infolight/bootstrap.infolight.main.net.js"></script></head>
+<body>
+    <form name="form1" method="post" action="./RWDMainPage.aspx" id="form1">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJMjYyODI5OTU4ZGTzywFf8A1i0yPDlka7ZxW+C7Wdm/VleJvgoPIUWk6YDw==" />
+</div>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="E3764131" />
+</div>
+        <div class="container-fluid main">
+            <div class="row">
+                <nav class="navbar navbar-inverse" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header" style="width: 100%">
+                        <button type="button" class="btn btn-primary btn-sm navbar-toggle collapsed" onclick="$('#menu').toggleClass('in')"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                        <a class="navbar-brand" style="padding-top: 18px; font-size: 25px;">MES 數據整合平台</a>
+                        <a tabindex="0" id="btn-user" class="btn navbar-btn" role="button" data-toggle="popover" data-trigger="focus"><span class="glyphicon glyphicon-user"></span><span class="btn-text" style="margin-left: 5px"></span><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                    </div>
+
+                </nav>
+                <div class="col-sm-2 col-md-2" id="menu" style="background: #444">
+                    <div id="collapseIcon" onclick="$('#menu').toggleClass('min');$('#tab').toggleClass('max');"><span class="glyphicon"></span></div>
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    </div>
+                </div>
+                <div class="col-sm-10 col-md-10" id="tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab"></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home" style="padding-top: 15px; height: 100%; background-color: #20323E;">
+                            <div class="container-fluid">
+
+                                <div class="row" style="margin: 1px 0px 0 10px; padding: 0;">
+                                    <div class="col-md-1" style="padding: 0px 10px 0px 0px;">
+                                        <div class="fact" style="height: 50px; line-height: 50px;">TYP</div>
+                                    </div>
+                                    <div class="col-md-2" style="padding: 0px 10px 0px 0px;">
+                                        <div class="fact" style="height: 50px; line-height: 50px; background-color: #22B14C;">Run : <span id="typ_on"></span></div>
+                                    </div>
+                                    <div class="col-md-2" style="padding: 0px 10px 0px 0px;">
+                                        <div class="fact" style="height: 50px; line-height: 50px; background-color: #ED1C24;">Idle : <span id="typ_off"></span></div>
+                                    </div>
+                                    <div class="col-md-2" style="padding: 0px 10px 0px 0px;">
+                                        <div class="fact" style="height: 50px; line-height: 50px; background-color: #FFC90E;">Fix : 0<span id="typ_off"></span></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin: 1px 0px 0 10px; padding: 0;" id="TYP">
+                                </div>
+
+                                <div class="row" style="margin: 60px 0px 0 10px; padding: 0;">
+                                    <div class="col-md-1" style="padding: 0px 10px 0px 0px;">
+                                        <div class="fact" style="height: 50px; line-height: 50px;">TTP</div>
+                                    </div>
+                                    <div class="col-md-2" style="padding: 0px 10px 0px 0px;">
+                                        <div class="fact" style="height: 50px; line-height: 50px; background-color: #22B14C;">Run : <span id="ttp_on"></span></div>
+                                    </div>
+                                    <div class="col-md-2" style="padding: 0px 10px 0px 0px;">
+                                        <div class="fact" style="height: 50px; line-height: 50px; background-color: #ED1C24;">Idle : <span id="ttp_off"></span></div>
+                                    </div>
+                                    <div class="col-md-2" style="padding: 0px 10px 0px 0px;">
+                                        <div class="fact" style="height: 50px; line-height: 50px; background-color: #FFC90E;">Fix : 0<span id="typ_off"></span></div>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin: 1px 0px 0 10px; padding: 0;" id="TTP">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

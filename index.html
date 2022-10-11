@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>戰情中心 - 登入作業</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url(img/5001.jpg) no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .modal-login {
+            color: #636363;
+            width: 350px;
+        }
+
+            .modal-login .modal-content {
+                padding: 20px;
+                border-radius: 5px;
+                border: none;
+                margin-top: 250px;
+                opacity: .85;
+            }
+
+            .modal-login .modal-header {
+                border-bottom: none;
+                position: relative;
+                justify-content: center;
+            }
+
+            .modal-login h4 {
+                text-align: center;
+                font-size: 26px;
+                margin: 30px 0 -15px;
+            }
+
+            .modal-login .form-control:focus {
+                border-color: #70c5c0;
+            }
+
+            .modal-login .form-control, .modal-login .btn {
+                min-height: 40px;
+                border-radius: 3px;
+            }
+
+            .modal-login .close {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+            }
+
+            .modal-login .modal-footer {
+                background: #ecf0f1;
+                border-color: #dee4e7;
+                text-align: center;
+                justify-content: center;
+                margin: 0 -20px -20px;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+
+                .modal-login .modal-footer a {
+                    color: #000;
+                }
+
+            .modal-login .avatar {
+                position: absolute;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+                top: -80px;
+                width: 105px;
+                height: 105px;
+                border-radius: 50%;
+                z-index: 9;
+                background: #60c7c1;
+                padding: 0px;
+                box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+            }
+
+                .modal-login .avatar img {
+                    width: 100%;
+                }
+
+            .modal-login.modal-dialog {
+                margin-top: 80px;
+            }
+
+            .modal-login .btn {
+                color: #fff;
+                border-radius: 4px;
+                background: #60c7c1;
+                text-decoration: none;
+                transition: all 0.4s;
+                line-height: normal;
+                border: none;
+            }
+
+                .modal-login .btn:hover, .modal-login .btn:focus {
+                    background: #45aba6;
+                    outline: none;
+                }
+
+        .trigger-btn {
+            display: inline-block;
+            margin: 100px auto;
+        }
+
+        .modal-title {
+            font-family: 微軟正黑體;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="modal-dialog modal-login">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="avatar">
+                    <img src="img/5002.png" />
+                </div>
+                <h4 class="modal-title">KPPC & EK - 戰情中心</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <input type="text" id="user_id" class="form-control" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="user_pwd" class="form-control" name="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <button onclick="check();" class="btn btn-primary btn-lg btn-block login-btn">Login</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#">Version : 20210421</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        //$(document).ready(function () {
+        //    var h = document.documentElement.clientHeight;
+        //    document.getElementById('main').style.marginTop = (h / 2 - 100) + "px";
+        //});
+        function check() {
+            //var Chief_List = ["P000207", "P000400", "P000120", "C000001", "E000167", "E000510", "E000008", "E000065", "P000292", "P000377", "P000453", "E000174", "P000142", "P000440", "E000239","P000613"];
+            //var Manager_List = ["E000605", "E000541", "E000236", "E000001", "E000636", "P000113", "P000176", "P000272", "P000568", "E000242", "E000418", "E000393","E000601","E000558"];
+            //2020.02.21 改用DB管理 [typ-sql-svr].[SmartFactory].[dbo].[Dashboard_users]
+            var user_id = $("#user_id").val();
+
+            var storage = window.localStorage;
+            storage.setItem("user_id", user_id);
+
+            $.ajax({
+                type: "POST",
+                url: "../ashx/user.ashx",
+                data: "user_id=" + $("#user_id").val() + "&user_pwd=" + $("#user_pwd").val(),
+                cache: false,
+                async: false,
+                success: function (data) {
+                    if (data == 'Chief' || data == 'Manager' || data == '') {
+                        if (data == 'Chief') {
+                            window.location = "V2-1.html";
+                        }
+                        else if (data == 'Manager') {
+                            window.location = "V2-3.html";
+                        } else {
+                            alert("無權限登入!");
+                        }
+
+                        //if (Chief_List.includes(user_id.toUpperCase())) {
+                        //    window.location = "Chief.html";
+                        //}
+                        //else if (Manager_List.includes(user_id.toUpperCase())) {
+                        //    window.location = "Manager.html";
+                        //} else {
+                        //    alert("無權限登入!");
+                        //}
+
+                    } else {
+                        alert(data);
+                    }
+                }
+            });
+            $("#user_id").val('');
+            $("#user_pwd").val('');
+        }
+    </script>
+</body>
+</html>                            

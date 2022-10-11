@@ -1,0 +1,245 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MES 機台管理看板(TYP)</title>
+    <link href="../js/bootstrap-4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="../js/jquery-1.12.1.min.js"></script>
+    <style>
+        .template_row {
+            display: none;
+        }
+
+
+        * {
+            outline: 1px solid rgb(106, 214, 205);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="col-md-2" style="padding: 0px 10px 0px 0px;margin-left:-15px;">
+            <div class="fact" style="height: 50px; line-height: 50px;">TYP_氨水廠</div>
+        </div>
+
+        <div class="row" id="typ_row_1">
+            <div class="template_row">
+                <div class="col-md-2">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-6">
+                                    ccb_id
+                                </div>
+                                <div class="col-md-6">
+                                    ccb_weight
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush text-center">
+                            wo_list
+                            <!--<li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+    <script type="text/javascript">
+        var no = 0;
+        var week = 1;
+        var CurrentDate;
+        var mach_no;
+        var aa;
+
+        mach_typ()
+
+        function ShowDateTime() {
+            var day_list = ['日', '一', '二', '三', '四', '五', '六'];
+            var now = new Date();//生成日期物件(完整的日期資訊)
+            var y = now.getFullYear();//年份
+            var M = now.getMonth() + 1;//月份
+            if (M < 10) {
+                M = '0' + M;
+            }
+            var d = now.getDate();//日期
+            if (d < 10) {
+                d = '0' + d;
+            }
+            var h = now.getHours();//小時
+            if (h < 10) {
+                h = '0' + h;
+            }
+            var m = now.getMinutes();//分鐘
+            if (m < 10) {
+                m = '0' + m;
+            }
+            var s = now.getSeconds();//秒數
+            if (s < 10) {
+                s = '0' + s;
+            }
+
+            var day = now.getDay();
+            $('#date').html(y + '-' + M + '-' + d);
+            $('#time').html(h + ':' + m + ':' + s + '星期' + day_list[day]);
+            CurrentDate = y + '-' + M + '-' + d + ' ' + h + ':' + m + ':' + s;
+        }
+
+
+        function mach_typ() {
+            $.ajax({
+                type: "POST",
+                url: "dashboard.ashx",
+                data: "fun_na=typ_ccb&factory=TYP",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    console.log(data[0]);
+                    $(data).each(function (index) {
+                        //var liList = "";
+                        //var ls_ccb_id;
+                        //var ls_ccb_weight;
+                        //liList += '<li class="list-group-item">' + data[index].carrier_id + '</li>';
+                        //liList += '<li class="list-group-item">' + data[index].item_name + '</li>';
+                        //liList += '<li class="list-group-item">' + data[index].wo_id + '</li>';
+                        //liList += '<li class="list-group-item">' + data[index].entity_id + '</li>';
+                        //liList += '<li class="list-group-item">' + data[index].step_name + '</li>';
+                        //liList += '<li class="list-group-item">' + data[index].stay_mins + '</li>';
+
+
+
+
+                        if (data[index].ccb_location == 'TYP_氨水廠') {
+                            var liList = "";
+                            var ls_ccb_id;
+                            var ls_ccb_weight;
+
+                            ls_ccb_id = data[index].ccb_id
+                            ls_ccb_weight = data[index].ccb_weight
+
+                            liList += '<li class="list-group-item">' + data[index].carrier_id + '</li>';
+                            liList += '<li class="list-group-item">' + data[index].item_name + '</li>';
+                            liList += '<li class="list-group-item">' + data[index].wo_id + '</li>';
+                            liList += '<li class="list-group-item">' + data[index].entity_id + '</li>';
+                            liList += '<li class="list-group-item">' + data[index].step_name + '</li>';
+                            liList += '<li class="list-group-item">' + data[index].stay_mins + '</li>';
+                           
+
+
+                            var this_row = $("#typ_row_1 .template_row").html();
+                            var content = $("#typ_row_1").html() + this_row.replace('ccb_id', ls_ccb_id).replace('ccb_weight', ls_ccb_weight).replace('wo_list', liList);
+                            $("#typ_row_1").html(content);
+
+
+                        }
+                    });
+
+                }
+            })
+        }
+
+
+
+        function mach() {
+            $.ajax({
+                type: "POST",
+                url: "dashboard.ashx",
+                data: "fun_na=mes_031",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        switch (data[i].e_tank_area_id) {
+                            // case 'WIC-A401':
+                            //     mach_no = $("#mach_no1");
+                            //     if ((Date.parse(data[i].step_finish_datetime)).valueOf() < (Date.parse(CurrentDate)).valueOf()) {
+                            //         $('#mach_no1').css({ 'background-color': '#6C272C' });
+                            //     }
+                            //     else {
+                            //         $('#mach_no1').css({ 'background-color': '#054D0C' });
+                            //     }
+                            //     break;
+                            // case 'WIC-A402':
+                            //     mach_no = $("#mach_no2");
+                            //     if ((Date.parse(data[i].step_finish_datetime)).valueOf() < (Date.parse(CurrentDate)).valueOf()) {
+                            //         $('#mach_no2').css({ 'background-color': '#6C272C' });
+                            //     }
+                            //     else {
+                            //         $('#mach_no2').css({ 'background-color': '#054D0C' });
+                            //     }
+                            //     break;
+                            case 'WIC-1301':
+                                mach_no = $("#mach_no3");
+                                if ((Date.parse(data[i].step_finish_datetime)).valueOf() < (Date.parse(CurrentDate)).valueOf()) {
+                                    $('#mach_no3').css({ 'background-color': '#6C272C' });
+                                }
+                                else {
+                                    $('#mach_no3').css({ 'background-color': '#054D0C' });
+                                }
+                                break;
+                            case 'WIC-5C04':
+                                mach_no = $("#mach_no26");
+                                if ((Date.parse(data[i].step_finish_datetime)).valueOf() < (Date.parse(CurrentDate)).valueOf()) {
+                                    $('#mach_no26').css({ 'background-color': '#6C272C' });
+                                }
+                                else {
+                                    $('#mach_no26').css({ 'background-color': '#054D0C' });
+                                }
+                                break;
+                            default:
+                        }
+                        // mach_context(data[i].wo_id, data[i].item_name, data[i].step_name, data[i].step_finish_datetime);
+                    }
+                }
+            });
+        }
+
+        function mach_context(wo_id, item_name, step_name, step_finish_datetime) {
+            mach_no.html("");
+            mach_no.append('<div class="mach">')
+            mach_no.append('<div class="wo_id">' + wo_id + '</div>')
+            mach_no.append('<div class="item_desc">' + item_name + '</div>')
+            mach_no.append('<div class="station">' + step_name + '</div>')
+            mach_no.append('</div>')
+            //mach_no.append('<div class="min">' + step_finish_datetime + '-預估</div>')
+        }
+
+
+        $(document).ready(function () {
+            var w = document.documentElement.clientWidth;
+            $('#msg').width(w - 80);
+            var h = document.documentElement.clientHeight;
+            $('.line1').height(h - 375);
+            $('.box').height(((h - 140) / 5));
+        });
+
+        $('#TTP_mach').click(function (e) {
+            e.preventDefault();
+            window.open('MES_CCB_TTP.html', '_self');
+        });
+
+        $('#TYP_mach').click(function (e) {
+            e.preventDefault();
+            window.open('MES_CCB_TYP.html', '_self');
+        });
+
+        $('#TYP_wo').click(function (e) {
+            e.preventDefault();
+            window.open('MES_WO_TYP.html', '_self');
+
+        });
+
+
+
+    </script>
+</body>
+</html>
